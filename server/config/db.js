@@ -7,8 +7,7 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI, {
-      // Modern mongoose (v6+) uses sensible defaults:
-      // useNewUrlParser and useUnifiedTopology are enabled automatically.
+      serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds instead of hanging
     });
 
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
