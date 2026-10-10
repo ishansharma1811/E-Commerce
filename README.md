@@ -10,7 +10,7 @@ A production-ready E-Commerce Web Application built using the **MERN Stack** (Mo
 [ Client: React + Vite (Port 5173) ]
                  │
                  ▼  Axios HTTP Requests (JSON + Bearer JWT)
-[ Backend: Node.js + Express (Port 5000) ]
+[ Backend: Node.js + Express (Port 5001) ]
         ├── Security & Utilities (Helmet, CORS, Rate Limit, Morgan)
         ├── Routes -> Middleware (Auth & Admin Verification)
         └── Controllers (Business Logic & Server-side Price/Stock Checks)
@@ -74,7 +74,7 @@ E-commerce/
 cd server
 npm install
 cp .env.example .env     # Configure your MONGO_URI in .env
-npm run dev              # Starts Express on http://localhost:5000
+npm run dev              # Starts Express on http://localhost:5001
 ```
 
 ### 3. Frontend Setup
@@ -87,4 +87,4 @@ npm run dev              # Starts Vite dev server on http://localhost:5173
 ### 4. Health Check
 Open your browser to:
 - Frontend: `http://localhost:5173`
-- Backend API Health: `http://localhost:5000/api/health`
+- Backend API Health: `http://localhost:5001/api/health`

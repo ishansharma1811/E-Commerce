@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
+const mongoose = require('mongoose');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -15,9 +16,16 @@ const app = express();
 
 // Security and utility middleware
 app.use(helmet());
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: allowedOrigins,
     credentials: true,
   })
 );
@@ -31,9 +39,11 @@ if (process.env.NODE_ENV === 'development') {
 
 // Health check endpoint (Used to verify backend server is operational)
 app.get('/api/health', (req, res) => {
+  const isDbConnected = mongoose.connection.readyState === 1;
   res.status(200).json({
     status: 'success',
     message: 'E-commerce API is up and running smoothly',
+    database: isDbConnected ? 'connected' : 'connecting_or_disconnected',
     timestamp: new Date().toISOString(),
   });
 });
@@ -62,7 +72,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);

@@ -64,12 +64,12 @@ function App() {
             <h3>Backend Server</h3>
           </div>
           <p className="card-desc">Node.js + Express + REST APIs</p>
-          <div className="meta-tag">Port: 5000</div>
-          
+          <div className="meta-tag">Port: 5001</div>
+
           <div className="action-row">
-            <button 
-              className="test-btn" 
-              onClick={checkBackendHealth} 
+            <button
+              className="test-btn"
+              onClick={checkBackendHealth}
               disabled={backendStatus.loading}
             >
               {backendStatus.loading ? 'Pinging API...' : 'Ping /api/health'}
@@ -88,7 +88,7 @@ function App() {
                 <>
                   <p><strong>Connection Failed:</strong></p>
                   <p>{backendStatus.error}</p>
-                  <small>Make sure backend is running on port 5000 (`npm run dev` in server/)</small>
+                  <small>Make sure backend is running on port 5001 (`npm run dev` in server/)</small>
                 </>
               )}
             </div>
@@ -97,13 +97,17 @@ function App() {
 
         <div className="card">
           <div className="card-header">
-            <span className="dot pending"></span>
+            <span className={`dot ${backendStatus.data?.database === 'connected' ? 'online' : backendStatus.checked ? 'offline' : 'pending'}`}></span>
             <h3>MongoDB Database</h3>
           </div>
           <p className="card-desc">Mongoose ODM + Schema Models</p>
-          <div className="meta-tag">URI Configured in server/.env</div>
+          <div className="meta-tag">
+            {backendStatus.data?.database === 'connected' ? 'Atlas: Connected' : 'Checking...'}
+          </div>
           <p className="hint-text">
-            Ready to connect via MongoDB Atlas or local MongoDB service.
+            {backendStatus.data?.database === 'connected'
+              ? '✅ MongoDB Atlas is connected and ready for Phase 2 data models.'
+              : 'Configured in server/.env (will verify via /api/health).'}
           </p>
         </div>
       </section>
